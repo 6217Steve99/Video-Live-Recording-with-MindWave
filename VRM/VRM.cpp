@@ -25,39 +25,75 @@ void VRM::on_timer_timeout()
         /* If the Packet containted a new raw wave value... */
         if (TG_GetValueStatus(connectionId, TG_DATA_RAW) != 0) {
             /* Get and print out the new raw value */
-            file <<TG_GetValue(connectionId, TG_DATA_RAW);
-        } /* end "If Packet contained a raw wave value..." */
+            file << TG_GetValue(connectionId, TG_DATA_RAW);
+        }
+        else
+        {
+            file << "0";
+        }
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_DELTA) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_DELTA);
+        }
+        else
+        {
+            file << "0";
         }
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_THETA) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_THETA);
         }
+        else
+        {
+            file << "0";
+        }
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_ALPHA1) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_ALPHA1);
+        }
+        else
+        {
+            file << "0";
         }
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_ALPHA2) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_ALPHA2);
         }
+        else
+        {
+            file << "0";
+        }
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_BETA1) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_BETA1);
+        }
+        else
+        {
+            file << "0";
         }
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_BETA2) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_BETA2);
         }
+        else
+        {
+            file << "0";
+        }
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_GAMMA1) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_GAMMA1);
         }
+        else
+        {
+            file << "0";
+        }
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_GAMMA2) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_GAMMA2);
+        }
+        else
+        {
+            file << "0";
         }
         file << ","<<mood<< std::endl;
 
@@ -107,7 +143,7 @@ void VRM::on_pushButton_clicked()
     if (errCode < 0) {
         ui.label->setText("ERROR: TG_Connect() returned %d.");
     }
-    file.open("data.txt", std::ios::out);
+    file.open("data.csv", std::ios::out);
     file << "RAW,DELTA,THETA,ALPHA1,ALPHA2,BETA1,BETA2,GAMMA1,GAMMA2,MOOD" << std::endl;
     ui.label->setText("Begin");
 }
