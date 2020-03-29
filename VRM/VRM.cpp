@@ -59,7 +59,7 @@ void VRM::on_timer_timeout()
         if (TG_GetValueStatus(connectionId, TG_DATA_GAMMA2) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_GAMMA2);
         }
-        file << std::endl;
+        file << ","<<mood<< std::endl;
 
 
         num++;
@@ -108,6 +108,7 @@ void VRM::on_pushButton_clicked()
         ui.label->setText("ERROR: TG_Connect() returned %d.");
     }
     file.open("data.txt", std::ios::out);
+    file << "RAW,DELTA,THETA,ALPHA1,ALPHA2,BETA1,BETA2,GAMMA1,GAMMA2,MOOD" << std::endl;
     ui.label->setText("Begin");
 }
 
@@ -116,4 +117,19 @@ void VRM::on_pushButton_2_clicked()
     fTimer->stop();
     file.close();
     ui.label->setText("Stop");
+}
+
+void VRM::on_radioButton_clicked()
+{
+    mood = 0;
+}
+
+void VRM::on_radioButton_2_clicked()
+{
+    mood = 1;
+}
+
+void VRM::on_radioButton_3_clicked()
+{
+    mood = 2;
 }
