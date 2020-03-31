@@ -10,7 +10,7 @@ VRM::VRM(QWidget *parent)
 	ui.setupUi(this);
 	fTimer = new QTimer(this);
 	fTimer->stop();
-	fTimer->setInterval(10);
+	fTimer->setInterval(5);
 	connect(fTimer, SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
 }
 
@@ -21,80 +21,68 @@ void VRM::on_timer_timeout()
 
     /* If TG_ReadPackets() was able to read a Packet of data... */
     if (packetsRead == 1) {
+        //time_t current = time(&current);/*获取当前时间*/
+
+        //char buff[26];
+        //ctime_s(buff, sizeof buff, &current);
+        //file << buff;
 
         /* If the Packet containted a new raw wave value... */
         if (TG_GetValueStatus(connectionId, TG_DATA_RAW) != 0) {
             /* Get and print out the new raw value */
             file << TG_GetValue(connectionId, TG_DATA_RAW);
         }
-        else
-        {
-            file << "0";
+        file << ",";
+        if (TG_GetValueStatus(connectionId, TG_DATA_ATTENTION) != 0) {
+            /* Get and print out the new raw value */
+            file << TG_GetValue(connectionId, TG_DATA_ATTENTION);
         }
         file << ",";
+        if (TG_GetValueStatus(connectionId, TG_DATA_MEDITATION) != 0) {
+            /* Get and print out the new raw value */
+            file << TG_GetValue(connectionId, TG_DATA_MEDITATION);
+        }
+        file << ",";
+        
         if (TG_GetValueStatus(connectionId, TG_DATA_DELTA) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_DELTA);
         }
-        else
-        {
-            file << "0";
-        }
+
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_THETA) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_THETA);
         }
-        else
-        {
-            file << "0";
-        }
+ 
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_ALPHA1) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_ALPHA1);
         }
-        else
-        {
-            file << "0";
-        }
+
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_ALPHA2) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_ALPHA2);
         }
-        else
-        {
-            file << "0";
-        }
+
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_BETA1) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_BETA1);
         }
-        else
-        {
-            file << "0";
-        }
+
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_BETA2) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_BETA2);
         }
-        else
-        {
-            file << "0";
-        }
+
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_GAMMA1) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_GAMMA1);
         }
-        else
-        {
-            file << "0";
-        }
+
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_GAMMA2) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_GAMMA2);
         }
-        else
-        {
-            file << "0";
-        }
+
         file << ","<<mood<< std::endl;
 
 
@@ -144,7 +132,7 @@ void VRM::on_pushButton_clicked()
         ui.label->setText("ERROR: TG_Connect() returned %d.");
     }
     file.open("data.csv", std::ios::out);
-    file << "RAW,DELTA,THETA,ALPHA1,ALPHA2,BETA1,BETA2,GAMMA1,GAMMA2,MOOD" << std::endl;
+    file << "RAW,ATTENTION,MEDITATION,DELTA,THETA,ALPHA1,ALPHA2,BETA1,BETA2,GAMMA1,GAMMA2,MOOD" << std::endl;
     ui.label->setText("Begin");
 }
 

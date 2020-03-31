@@ -356,4 +356,5 @@ MigrationBackup/
 VRM/dataLog.txt
 VRM/streamLog.txt
 VRM/data.txt
+VRM/data.csv
 
