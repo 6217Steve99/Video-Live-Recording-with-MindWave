@@ -77,8 +77,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="thinkgear64.lib">
-      <Filter>Source Files</Filter>
-    </Library>
+    <Library Include="thinkgear64.lib" />
   </ItemGroup>
 </Project>

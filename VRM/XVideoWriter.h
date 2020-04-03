@@ -1,26 +1,3 @@
-/*******************************************************************************
-**                                                                            **
-**                     Jiedi(China nanjing)Ltd.                               **
-**	               创建：夏曹俊，此代码可用作为学习参考                       **
-*******************************************************************************/
-
-/*****************************FILE INFOMATION***********************************
-**
-** Project       : FFmpeg
-** Description   : FFMPEG项目创建示例
-** Contact       : xiacaojun@qq.com
-**        博客   : http://blog.csdn.net/jiedichina
-**		视频课程 : http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=961
-**                 http://edu.51cto.com/lecturer/index/user_id-12016059.html
-**                 http://study.163.com/u/xiacaojun
-**                 https://jiedi.ke.qq.com/
-**   FFmpeg音视频编码实战 课程群 ：651163356
-**   微信公众号  : jiedi2007
-**		头条号	 : 夏曹俊
-** Creation date : 2017-05-17
-**
-*******************************************************************************/
-
 #pragma once
 #include <string>
 class AVPacket;
@@ -34,9 +11,11 @@ class XVideoWriter
 {
 public:
 	//视频输入参数
-	int inWidth = 848;
-	int inHeight = 480;
-	int inPixFmt = 30;   //AV_PIX_FMT_BGRA
+	int inWidth = 1920;
+	int inHeight = 1080;
+	int inPixFmt = 25;   //AV_PIX_FMT_BGRA 30
+	// AV_PIX_FMT_ARGB 25
+	//AV_PIX_FMT_ABGR 27
 
 	//音频输入参数
 	int inSampleRate = 44100;
@@ -45,8 +24,8 @@ public:
 	
 	//视频输出参数
 	int vBitrate = 4000000;
-	int outWidth = 848;
-	int outHeight = 480;
+	int outWidth = 1920;
+	int outHeight = 1080;
 	int outFPS = 25;
 
 	//音频输出参数

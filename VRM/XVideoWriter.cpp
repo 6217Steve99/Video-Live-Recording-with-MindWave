@@ -1,25 +1,3 @@
-/*******************************************************************************
-**                                                                            **
-**                     Jiedi(China nanjing)Ltd.                               **
-**	               创建：夏曹俊，此代码可用作为学习参考                       **
-*******************************************************************************/
-
-/*****************************FILE INFOMATION***********************************
-**
-** Project       : FFmpeg
-** Description   : FFMPEG项目创建示例
-** Contact       : xiacaojun@qq.com
-**        博客   : http://blog.csdn.net/jiedichina
-**		视频课程 : http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=961
-**                 http://edu.51cto.com/lecturer/index/user_id-12016059.html
-**                 http://study.163.com/u/xiacaojun
-**                 https://jiedi.ke.qq.com/
-**   FFmpeg音视频编码实战 课程群 ：651163356
-**   微信公众号  : jiedi2007
-**		头条号	 : 夏曹俊
-** Creation date : 2017-05-17
-**
-*******************************************************************************/
 #include "XVideoWriter.h"
 extern "C"
 {
@@ -145,13 +123,28 @@ public:
 
 		av_dump_format(ic, 0, filename.c_str(), 1);
 		
-		//像素（尺寸）转换上下文 rgb to yuv
 		vsc = sws_getCachedContext(vsc,
+			inWidth, inHeight, (AVPixelFormat)inPixFmt,
+			outWidth, outHeight, AV_PIX_FMT_BGRA,
+			SWS_BICUBIC,
+			NULL, NULL, NULL
+		);
+
+		vsc = sws_getCachedContext(vsc,
+			outWidth, outHeight, AV_PIX_FMT_BGRA,
+			outWidth, outHeight, AV_PIX_FMT_YUV420P,
+			SWS_BICUBIC,
+			NULL, NULL, NULL
+		);
+
+
+		//像素（尺寸）转换上下文 rgb to yuv
+		/*vsc = sws_getCachedContext(vsc,
 			inWidth, inHeight, (AVPixelFormat)inPixFmt,
 			outWidth, outHeight, AV_PIX_FMT_YUV420P,
 			SWS_BICUBIC,
 			NULL,NULL,NULL
-			);
+			);*/
 		if (!vsc)
 		{
 			cerr << "sws_getCachedContext failed!" << endl;

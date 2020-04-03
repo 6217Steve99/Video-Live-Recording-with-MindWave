@@ -7,8 +7,8 @@ class XScreenRecord:protected QThread
 public:
 	//in
 	int fps = 10;
-	int outWidth = 1280;
-	int outHeight = 720;
+	int outWidth = 1920;
+	int outHeight = 1080;
 
 	bool Start(const char *filename);
 	void Stop();
