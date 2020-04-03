@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{636DDC9F-6D3D-4CD2-B3B4-DA950B3908B7}</ProjectGuid>
+    <ProjectGuid>{91136075-8AAB-4B5F-BD96-91FC57047F5E}</ProjectGuid>
     <Keyword>QtVS_v302</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
@@ -38,16 +38,20 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>E:\Project\EEG\VRM\VRM\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\Project\EEG\VRM\VRM\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;multimedia;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;multimedia;widgets</QtModules>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
@@ -82,6 +86,10 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VRM.cpp" />
+    <ClCompile Include="XAudioThread.cpp" />
+    <ClCompile Include="XCaptureThread.cpp" />
+    <ClCompile Include="XScreenRecord.cpp" />
+    <ClCompile Include="XVideoWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="VRM.h" />
@@ -94,6 +102,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thinkgear.h" />
+    <ClInclude Include="XAudioThread.h" />
+    <ClInclude Include="XCaptureThread.h" />
+    <ClInclude Include="XScreenRecord.h" />
+    <ClInclude Include="XVideoWriter.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="thinkgear64.lib" />

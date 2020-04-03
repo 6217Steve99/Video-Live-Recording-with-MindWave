@@ -18,6 +18,10 @@ void XAudioThread::Start()
 	fmt.setSampleType(QAudioFormat::UnSignedInt);
 	fmt.setByteOrder(QAudioFormat::LittleEndian);
 	fmt.setCodec("audio/pcm");
+	QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
+	if (!info.isFormatSupported(fmt)) {
+		fmt = info.nearestFormat(fmt);
+	}
 	input = new QAudioInput(fmt);
 	io = input->start();
 	mutex.unlock();

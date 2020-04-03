@@ -31,6 +31,18 @@
     <ClCompile Include="VRM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="XAudioThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XCaptureThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XScreenRecord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XVideoWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="VRM.h">
@@ -48,11 +60,25 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="thinkgear.h">
+    <ClInclude Include="XAudioThread.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XCaptureThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XScreenRecord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XVideoWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thinkgear.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="thinkgear64.lib" />
+    <Library Include="thinkgear64.lib">
+      <Filter>Source Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>

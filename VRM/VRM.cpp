@@ -1,17 +1,100 @@
 #include "VRM.h"
-#include <qdatetime.h>
-#include <QString>
 #include <iostream>
-#include <fstream>
+#include <QTime>
+#include "XScreenRecord.h"
+//using namespace std;
+static bool isRecord = false;
+static QTime rtime;
 
 VRM::VRM(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	startTimer(100);
 	fTimer = new QTimer(this);
 	fTimer->stop();
-	fTimer->setInterval(5);
+	fTimer->setInterval(2);
 	connect(fTimer, SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
+}
+
+void VRM::timerEvent(QTimerEvent* e)
+{
+	if (isRecord)
+	{
+		int es = rtime.elapsed() / 1000;
+		char buf[1024] = { 0 };
+		sprintf(buf, "%03d:%02d", es / 60, es % 60);
+		ui.timelabel->setText(buf);
+	}
+}
+
+void VRM::on_recordButton_clicked()
+{
+	isRecord = !isRecord;
+	std::cout << "Record";
+	if (isRecord)
+	{
+		rtime.restart();
+		QDateTime t = QDateTime::currentDateTime();
+		QString filename = t.toString("yyyyMMdd_hhmmss");
+		filename = "xcreen_" + filename;
+		filename += ".mp4";
+
+        /* Get a connection ID handle to ThinkGear */
+        connectionId = TG_GetNewConnectionId();
+        if (connectionId < 0) {
+            ui.label->setText("ERROR: TG_GetNewConnectionId() returned %d.");
+        }
+
+        /* Set/open stream (raw bytes) log file for connection */
+        errCode = TG_SetStreamLog(connectionId, "streamLog.txt");
+        if (errCode < 0) {
+            ui.label->setText("ERROR: TG_SetStreamLog() returned %d.");
+        }
+
+        /* Set/open data (ThinkGear values) log file for connection */
+        errCode = TG_SetDataLog(connectionId, "dataLog.txt");
+        if (errCode < 0) {
+            ui.label->setText("ERROR: TG_SetDataLog() returned %d.");
+        }
+
+        /* Attempt to connect the connection ID handle to serial port "COM5" */
+        /* NOTE: On Windows, COM10 and higher must be preceded by \\.\, as in
+         *       "\\\\.\\COM12" (must escape backslashes in strings).  COM9
+         *       and lower do not require the \\.\, but are allowed to include
+         *       them.  On Mac OS X, COM ports are named like
+         *       "/dev/tty.MindSet-DevB-1".
+         */
+        comPortName = "\\\\.\\COM5";
+        errCode = TG_Connect(connectionId,
+            comPortName,
+            TG_BAUD_57600,
+            TG_STREAM_PACKETS);
+        if (errCode < 0) {
+            ui.label->setText("ERROR: TG_Connect() returned %d.");
+        }
+        file.open("data.csv", std::ios::out);
+        file << "RAW,ATTENTION,MEDITATION,DELTA,THETA,ALPHA1,ALPHA2,BETA1,BETA2,GAMMA1,GAMMA2,MOOD" << std::endl;
+        ui.label->setText("Begin");
+
+
+
+		XScreenRecord::Get()->outWidth = ui.widthEdit->text().toInt();
+		XScreenRecord::Get()->outHeight = ui.heightEdit->text().toInt();
+		XScreenRecord::Get()->fps = ui.fpsEdit->text().toInt();
+		if (XScreenRecord::Get()->Start(filename.toLocal8Bit()))
+		{
+			return;
+		}
+
+
+		isRecord = false;
+	}
+    
+	{
+		XScreenRecord::Get()->Stop();
+        file.close();
+	}
 }
 
 void VRM::on_timer_timeout()
@@ -43,7 +126,7 @@ void VRM::on_timer_timeout()
             file << TG_GetValue(connectionId, TG_DATA_MEDITATION);
         }
         file << ",";
-        
+
         if (TG_GetValueStatus(connectionId, TG_DATA_DELTA) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_DELTA);
         }
@@ -52,7 +135,7 @@ void VRM::on_timer_timeout()
         if (TG_GetValueStatus(connectionId, TG_DATA_THETA) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_THETA);
         }
- 
+
         file << ",";
         if (TG_GetValueStatus(connectionId, TG_DATA_ALPHA1) != 0) {
             file << TG_GetValue(connectionId, TG_DATA_ALPHA1);
@@ -83,77 +166,7 @@ void VRM::on_timer_timeout()
             file << TG_GetValue(connectionId, TG_DATA_GAMMA2);
         }
 
-        file << ","<<mood<< std::endl;
-
-
-        num++;
-        ui.label->setText(QString::number(num));
-
+        file << "," << mood << std::endl;
     } /* end "If TG_ReadPackets() was able to read a Packet..." */
 
-}
-
-void VRM::on_pushButton_clicked()
-{
-	ui.label->setText("begin");
-	fTimer->start();
-
-    /* Get a connection ID handle to ThinkGear */
-    connectionId = TG_GetNewConnectionId();
-    if (connectionId < 0) {
-        ui.label->setText("ERROR: TG_GetNewConnectionId() returned %d.");
-    }
-
-    /* Set/open stream (raw bytes) log file for connection */
-    errCode = TG_SetStreamLog(connectionId, "streamLog.txt");
-    if (errCode < 0) {
-        ui.label->setText("ERROR: TG_SetStreamLog() returned %d.");
-    }
-
-    /* Set/open data (ThinkGear values) log file for connection */
-    errCode = TG_SetDataLog(connectionId, "dataLog.txt");
-    if (errCode < 0) {
-        ui.label->setText("ERROR: TG_SetDataLog() returned %d.");
-    }
-
-    /* Attempt to connect the connection ID handle to serial port "COM5" */
-    /* NOTE: On Windows, COM10 and higher must be preceded by \\.\, as in
-     *       "\\\\.\\COM12" (must escape backslashes in strings).  COM9
-     *       and lower do not require the \\.\, but are allowed to include
-     *       them.  On Mac OS X, COM ports are named like
-     *       "/dev/tty.MindSet-DevB-1".
-     */
-    comPortName = "\\\\.\\COM5";
-    errCode = TG_Connect(connectionId,
-        comPortName,
-        TG_BAUD_57600,
-        TG_STREAM_PACKETS);
-    if (errCode < 0) {
-        ui.label->setText("ERROR: TG_Connect() returned %d.");
-    }
-    file.open("data.csv", std::ios::out);
-    file << "RAW,ATTENTION,MEDITATION,DELTA,THETA,ALPHA1,ALPHA2,BETA1,BETA2,GAMMA1,GAMMA2,MOOD" << std::endl;
-    ui.label->setText("Begin");
-}
-
-void VRM::on_pushButton_2_clicked()
-{
-    fTimer->stop();
-    file.close();
-    ui.label->setText("Stop");
-}
-
-void VRM::on_radioButton_clicked()
-{
-    mood = 0;
-}
-
-void VRM::on_radioButton_2_clicked()
-{
-    mood = 1;
-}
-
-void VRM::on_radioButton_3_clicked()
-{
-    mood = 2;
 }

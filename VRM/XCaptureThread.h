@@ -1,5 +1,6 @@
 #pragma once
 #include <QThread>
+#include <QMutex>
 class XCaptureThread:protected QThread
 {
 public:
@@ -12,7 +13,7 @@ public:
 	int fps = 10;
 	int cacheSize = 3;
 	
-	//线程安全
+	//线程安全,返回的空间由用户释放
 	char *GetRGB();
 	void Start();
 	void Stop();

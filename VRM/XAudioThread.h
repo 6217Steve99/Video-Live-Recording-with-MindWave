@@ -1,5 +1,6 @@
 #pragma once
 #include <QThread>
+#include <QMutex>
 class XAudioThread:protected QThread
 {
 public:
@@ -9,6 +10,7 @@ public:
 	int sampleByte = 2;
 	int cacheSize = 10;
 	int nbSample = 1024;
+	//返回空间由用户清理
 	char *GetPCM();
 	void Start();
 	void Stop();

@@ -10,32 +10,22 @@
 #include "thinkgear.h"
 #include <fstream>
 
-
 class VRM : public QMainWindow
 {
 	Q_OBJECT
 
 public:
 	VRM(QWidget *parent = Q_NULLPTR);
+	void timerEvent(QTimerEvent* e);
 
 private slots:
+    void on_recordButton_clicked();
 	void on_timer_timeout();
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
-    void on_radioButton_clicked();
-
-    void on_radioButton_2_clicked();
-
-    void on_radioButton_3_clicked();
 
 private:
 	Ui::VRMClass ui;
 	QTimer* fTimer;
 	int num = 0;
-
-private:
 	char* comPortName = "3";
 	int   dllVersion = 0;
 	int   connectionId = 0;
@@ -49,5 +39,4 @@ private:
 	std::fstream file;
 
 	int mood = 0;
-
 };

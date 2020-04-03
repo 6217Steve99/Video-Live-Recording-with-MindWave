@@ -7,8 +7,18 @@
 message("You are running qmake on a generated .pro file. This may not work!")
 
 
-HEADERS += ./VRM.h
+HEADERS += ./VRM.h \
+    ./XAudioThread.h \
+    ./XCaptureThread.h \
+    ./xscreen.h \
+    ./XScreenRecord.h \
+    ./XVideoWriter.h
 SOURCES += ./main.cpp \
-    ./VRM.cpp
+    ./VRM.cpp \
+    ./XAudioThread.cpp \
+    ./XCaptureThread.cpp \
+    ./xscreen.cpp \
+    ./XScreenRecord.cpp \
+    ./XVideoWriter.cpp
 FORMS += ./VRM.ui
 RESOURCES += VRM.qrc

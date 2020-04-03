@@ -58,7 +58,7 @@ void CaptureScreen(void *data)
 	}
 	memcpy(data, rect.pBits, w * h * 4);
 	sur->UnlockRect();
-	cout << ".";
+	//cout << ".";
 }
 
 
@@ -98,7 +98,7 @@ char *XCaptureThread::GetRGB()
 	char *re = rgbs.front();
 	rgbs.pop_front();
 	mutex.unlock();
-	cout << "V";
+	//cout << "V";
 	return re;
 }
 void XCaptureThread::run()
@@ -122,7 +122,7 @@ void XCaptureThread::run()
 		{
 			s = 10;
 		}
-		cout << s;
+		//cout << s;
 
 		msleep(s);
 	}
